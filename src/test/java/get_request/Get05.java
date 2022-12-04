@@ -58,5 +58,23 @@ public class Get05 extends AutomationExerciseBaseUrl {
         System.out.println("brands =" +brands);
         assertEquals(12,brands.size());
 
+        // total price of all produc is 41864
+
+        List<String> prices=response.jsonPath().getList("products.price");
+        System.out.println("prices ="+ prices);
+
+       //1st way
+        int totalPrice=0;
+        for(String w:prices){
+           totalPrice += Integer.parseInt(w.replaceAll("[^0-9]",""));
+        }
+        System.out.println("totalPrice="+totalPrice);
+        assertEquals(41864,totalPrice);
+
+        //2nd way
+        int totalPriceLambda = prices.stream().map(t->Integer.parseInt( t.replaceAll("[^0-9]",""))).reduce(0,Math::addExact);
+        System.out.println("totalPriceLambda = " + totalPriceLambda);
+        assertEquals(41864,totalPriceLambda);
+
     }
 }
